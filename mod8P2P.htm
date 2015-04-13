@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head><title>Event Example</title><meta charset="UTF-8">
+<script type="text/javascript" src="zepto.min.js" > </script>
+<script type="text/javascript" src="touch.js" ></script>
+<script type="text/javascript">
+  $(function(){ 
+    var t, cl = $("#display");
+    localStorage.listLaps = (localStorage.listLaps || "");
+
+    function mostrar()  { cl.html((+cl.html() + 0.1).toFixed(1)); };
+    function arrancar() { t=setInterval(mostrar, 100);};
+    function parar()    { clearInterval(t);  t=undefined; localStorage.listLaps += cl.html() + "<br>"; listLaps.html(localStorage.listLaps);};
+    function cambiar()  { if (!t) arrancar(); else parar(); };
+    function cleanDisplay()  {
+    	if (t === undefined) {
+	    	cl.html("0.0");
+	    	localStorage.listLaps = "";
+	    	listLaps.html("");
+    	}
+    }
+	$("#cambiar").on('click', cambiar);
+    $("#inicializar").on('click', function(){ cleanDisplay() });
+
+ 	var i = $('#cronometro');
+
+ 	i.on('tap', function(){ cambiar() });
+    i.on('swipeRight', function(){ cleanDisplay()});
+    i.on('swipeLeft', function() { cleanDisplay()});
+
+    var listLaps = $('#listLaps');
+    listLaps.html(localStorage.listLaps);
+  });
+
+
+</script>
+<link rel="stylesheet" href="digfont/font.css">
+<style>
+	#cronometro {
+		width: 450px;
+		height: 419px;
+		background: url("cronometro.jpg") no-repeat;
+		text-align: center;
+	}
+	#display{
+		width:90px;
+		text-align: right;
+		position: relative;
+		left: 180px;
+		top: 170px;
+		font-size: 70px;
+		font-family: 'DSDIGI';
+	}
+	#buttons{
+		position: relative;
+		width:450px;
+		top:340px;
+		text-align: center;
+		font-size: 40px;
+		font-family: 'DSDIGI';
+	}
+	#listLaps{
+		position: relative;
+		width:250px;
+		top:360px;
+		text-align: right;
+		font-size: 40px;
+		font-family: 'DSDIGI';
+	}
+</style>
+</head>
+	<body >
+		<h2>Cronómetro. Tap to start/stop. Swipe to reset</h2>
+
+		<div id="cronometro">
+			<div id="display"> 0.0 </div>
+			<div id="buttons">
+				<button type="button" id="cambiar"> arrancar/parar </button>
+				<button type="button" id="inicializar">  inicializar </button>
+			</div>
+			<div id="listLaps"></div>
+		</div>
+
+		
+	</body>
+</html>
